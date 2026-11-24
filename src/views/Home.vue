@@ -178,7 +178,7 @@ export default {
     return {
       // Paste the link to your picture here, e.g. 'https://example.com/me.jpg',
       // or place a file in /public (e.g. public/me.jpg) and use 'me.jpg'.
-      photoUrl: '',
+      photoUrl: 'isabella-schoen.jpg',
       linkedin: 'https://www.linkedin.com/in/isabella-sch%C3%B6n-854311211/',
       github: 'https://github.com/IsabellaSchoen',
 
