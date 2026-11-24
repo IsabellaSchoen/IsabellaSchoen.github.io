@@ -1,160 +1,176 @@
-/* the output */
 <template>
-  <div class="main-content">
-    <header class="intro">
-      <div class="intro-photo">
-        <!-- TODO: put the link to your picture into photoUrl below (in the script section) -->
-        <img v-if="photoUrl" :src="photoUrl" alt="Isabella Schön" />
-        <div v-else class="photo-placeholder">
-          <b-icon icon="person-fill"></b-icon>
-        </div>
+  <div class="site">
+    <nav class="site-nav">
+      <div class="nav-inner">
+        <a class="nav-brand" href="#" @click.prevent="scrollTo('top')">Isabella Schön</a>
+        <ul class="nav-links">
+          <li v-for="link in navLinks" :key="link.id">
+            <a href="#" @click.prevent="scrollTo(link.id)">{{ link.label }}</a>
+          </li>
+        </ul>
       </div>
+    </nav>
 
-      <div class="intro-text">
-        <h1>Isabella Schön</h1>
-        <p>
-          I hold a Bachelor's degree in Applied Computer Science and a Master's
-          degree in Cognitive Science. I am interested in combining artificial
-          intelligence and cognitive science to drive progress in clinical brain
-          research.
-        </p>
+    <router-view/>
 
-        <div class="intro-buttons">
-          <b-button
-            variant="outline-dark"
-            href="https://www.linkedin.com/in/isabella-schoen/"
-            target="_blank"
-            rel="noopener"
-          >
-            <b-icon icon="linkedin"></b-icon>
-            LinkedIn
-          </b-button>
-          <b-button
-            variant="outline-dark"
-            href="https://github.com/IsabellaSchoen"
-            target="_blank"
-            rel="noopener"
-          >
-            <b-icon icon="github"></b-icon>
-            GitHub
-          </b-button>
-        </div>
+    <footer class="footer">
+      <div class="footer-inner">
+        <span>© {{ year }} Isabella Schön</span>
+        <span class="footer-links">
+          <a :href="linkedin" target="_blank" rel="noopener">LinkedIn</a>
+          <a :href="github" target="_blank" rel="noopener">GitHub</a>
+        </span>
       </div>
-    </header>
-    <router-view />
+    </footer>
   </div>
 </template>
 
-/* the logic: the javascript */
+
 <script>
 export default {
-  name: "App",
+  name: 'App',
   data() {
     return {
-      // Paste the link to your picture here, e.g. 'https://example.com/me.jpg'
-      photoUrl: "",
-    };
+      year: new Date().getFullYear(),
+      linkedin: 'https://www.linkedin.com/in/isabella-sch%C3%B6n-854311211/',
+      github: 'https://github.com/IsabellaSchoen',
+      navLinks: [
+        { id: 'about', label: 'About' },
+        { id: 'experience', label: 'Experience' },
+        { id: 'education', label: 'Education' },
+        { id: 'skills', label: 'Skills' },
+        { id: 'projects', label: 'Projects' },
+        { id: 'contact', label: 'Contact' }
+      ]
+    }
   },
-};
+  methods: {
+    // Hash routing owns the URL fragment, so in-page links scroll via JS.
+    scrollTo(id) {
+      if (id === 'top') {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+        return
+      }
+      const el = document.getElementById(id)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+}
 </script>
 
-/* the styling */
+
 <style>
-html,
+:root {
+  --navy: #1c2236;
+  --navy-soft: #2d3552;
+  --accent: #4a6fa5;
+  --bg: #faf8f3;
+  --surface: #ffffff;
+  --text: #1f2430;
+  --muted: #6b7080;
+  --line: #e4e1d8;
+  --radius: 12px;
+  --maxw: 1040px;
+}
+
+html {
+  scroll-padding-top: 80px;
+}
+
 body {
   margin: 0;
-  background-color: floralwhite !important;
-}
-
-.main-content {
-  font-family: Avenir, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 48px 16px;
-  box-sizing: border-box;
 }
 
-.intro {
-  display: flex;
-  align-items: center;
-  gap: 48px;
-  max-width: 880px;
+a {
+  color: var(--accent);
+}
+
+/* Navigation */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--navy);
+}
+
+.nav-inner {
+  max-width: var(--maxw);
   margin: 0 auto;
-  text-align: left;
-}
-
-.intro-photo {
-  flex-shrink: 0;
-}
-
-.intro-photo img,
-.photo-placeholder {
-  display: block;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.photo-placeholder {
+  padding: 0 24px;
+  height: 64px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: #e9e4d8;
-  color: #8a8478;
-  font-size: 96px;
+  justify-content: space-between;
+  gap: 24px;
 }
 
-.intro-text h1 {
-  color: black;
-  font-size: clamp(2rem, 5vw, 2.75rem);
+.nav-brand {
+  color: #fff !important;
   font-weight: 600;
-  margin: 0 0 16px;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  text-decoration: none !important;
+  white-space: nowrap;
 }
 
-.intro-text p {
-  color: black;
-  font-size: 1.125rem;
-  line-height: 1.6;
-  max-width: 60ch;
-  margin: 0;
-}
-
-.intro-buttons {
+.nav-links {
   display: flex;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.92rem;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.nav-links a:hover {
+  color: #fff;
+}
+
+/* Footer */
+.footer {
+  background: var(--navy);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.footer-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 24px;
 }
 
-.intro-buttons .btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+.footer-links {
+  display: flex;
+  gap: 20px;
 }
 
-@media (max-width: 700px) {
-  .intro {
-    flex-direction: column;
-    gap: 24px;
-    text-align: center;
-  }
-  .intro-photo img,
-  .photo-placeholder {
-    width: 150px;
-    height: 150px;
-    font-size: 72px;
-  }
-  .intro-text p {
-    margin: 0 auto;
-  }
-  .intro-buttons {
-    justify-content: center;
+.footer-links a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+@media (max-width: 760px) {
+  .nav-links {
+    display: none;
   }
 }
 </style>
